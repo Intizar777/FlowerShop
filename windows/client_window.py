@@ -23,73 +23,42 @@ class ClientWindow(QMainWindow, Ui_MainWindow):
 
         # Подключаем сигналы
         self.lineEdit_flo.textChanged.connect(self.proxy.setFilterFixedString)
-        self.pushButton_find_ord.clicked.connect(self.filter_orders)  # Кнопка "Найти"
         self.pushButton_add_fl.clicked.connect(self.add_fl)
 
     def load_info_orders(self):
-        """Загрузка заказов в таблицу"""
-        self.orders_data = get_data_orders(user_id=self.user_id)  # Все заказы
-
-        # Создаем модель для заказов
+        self.orders_data = get_data_orders(user_id=self.user_id)
         self.model_orders = QStandardItemModel()
         self.model_orders.setHorizontalHeaderLabels(["Дата заказа", "Сумма", "Статус"])
 
+        self.columns_orders = ["order_date", "total_amount", "status"]
         for row in self.orders_data:
-            # Форматируем дату
-            date_val = row.get('order_date', '')
-            if date_val:
-                date_val = date_val.strftime('%Y-%m-%d')
+            items = []
+            for col in self.columns_orders:
+                val = row.get(col, '')
+                if col == 'order_date' and val:
+                    val = val.strftime('%Y-%m-%d')
+                items.append(QStandardItem(str(val)))
 
-            # Получаем сумму и статус
-            amount = row.get('total_amount', '0')
-            status = row.get('status', '')
-
-            items = [
-                QStandardItem(str(date_val)),
-                QStandardItem(str(amount)),
-                QStandardItem(str(status))
-            ]
             self.model_orders.appendRow(items)
-
         self.tableView_2.setModel(self.model_orders)
 
-    def filter_orders(self):
-        """Фильтр заказов по дате"""
-        filter_date = self.lineEdit_date.text()
-
-        # Получаем отфильтрованные или все заказы
-        if filter_date:
-            self.orders_data = get_data_orders(filter_date, self.user_id)
-        else:
-            self.orders_data = get_data_orders(user_id=self.user_id)
-
-        self.update_orders_table()
-
     def update_orders_table(self):
-        """Обновить таблицу заказов"""
         self.model_orders = QStandardItemModel()
-        self.model_orders.clear()
         self.model_orders.setHorizontalHeaderLabels(["Дата заказа", "Сумма", "Статус"])
 
+        self.columns_orders = ["order_date", "total_amount", "status"]
         for row in self.orders_data:
-            date_val = row.get('order_date', '')
-            if date_val:
-                date_val = date_val.strftime('%Y-%m-%d')
+            items = []
+            for col in self.columns_orders:
+                val = row.get(col, '')
+                if col == 'order_date' and val:
+                    val = val.strftime('%Y-%m-%d')
+                items.append(QStandardItem(str(val)))
 
-            amount = row.get('total_amount', '0')
-            status = row.get('status', '')
-
-            items = [
-                QStandardItem(str(date_val)),
-                QStandardItem(str(amount)),
-                QStandardItem(str(status))
-            ]
             self.model_orders.appendRow(items)
-
         self.tableView_2.setModel(self.model_orders)
 
     def load_info_flowers(self):
-        """Загрузка товаров в каталог"""
         self.data = get_data_products()
         self.model = QStandardItemModel()
         self.model.setHorizontalHeaderLabels(["id", "Товар", "Цена", "ед.изм."])

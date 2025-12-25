@@ -15,10 +15,8 @@ class OrderWindow(QDialog, Ui_Dialog):
         self.user_id = user_id
         self.pushButton_order_buy.clicked.connect(self.on_save_ord)
         self.load_products()
-
         self.spinBox_quan.valueChanged.connect(self.calculate_price)
         self.comboBox_buy.currentIndexChanged.connect(self.calculate_price)
-
 
     def load_products(self):
         products = get_data_products()
@@ -49,7 +47,7 @@ class OrderWindow(QDialog, Ui_Dialog):
                 QMessageBox.warning(self, "Ошибка", "Укажите количество!")
                 return
 
-            result = add_order(total_price)  # Только сумма
+            result = add_order(total_price, self.user_id)
 
             if result["success"]:
                 QMessageBox.information(self, "Успех", "Заказ оформлен!")

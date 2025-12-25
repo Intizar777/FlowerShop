@@ -52,7 +52,7 @@ def get_data_orders(filter_date=None, user_id=1):
         res = cur.fetchall()
         return res
 
-def add_order(total_price, user_id=1):
+def add_order(total_price, user_id=None):
     """Просто сохраняем заказ с общей суммой"""
     try:
         with conn.cursor() as cur:

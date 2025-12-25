@@ -31,10 +31,6 @@ class AuthWindow(QMainWindow, Ui_MainWindow):
             self.win2 = ClientWindow(user_id=user_id)  # Передаем user_id
             self.win2.show()
             self.close()
-        # else:
-        #     self.win3 = ManagerWindow()
-        #     self.win3.show()
-        #     self.close()
 
 
 if __name__ == "__main__":
