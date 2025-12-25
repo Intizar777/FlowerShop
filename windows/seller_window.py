@@ -13,7 +13,7 @@ class SellerWindow(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.proxy = QtCore.QSortFilterProxyModel()
-        self.proxy.setFilterKeyColumn(0)
+        self.proxy.setFilterKeyColumn(1)
         self.load_info()
         self.lineEdit_fio_cl.textChanged.connect(self.proxy.setFilterFixedString)
         self.pushButton_edit_cl.clicked.connect(self.edit)
